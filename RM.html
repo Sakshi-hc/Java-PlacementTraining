@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Restaurant Menu</title>
+  <style>
+    :root {
+      --bg: #f9f9f9;
+      --text: #333;
+      --primary: #e63946;
+      --card-bg: #fff;
+      --price: #1d3557;
+    }
+
+    body.dark {
+      --bg: #1a1a1a;
+      --text: #eee;
+      --primary: #ff6b6b;
+      --card-bg: #2a2a2a;
+      --price: #ffd166;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    header {
+      background: var(--primary);
+      padding: 2rem;
+      text-align: center;
+      color: white;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--card-bg);
+    }
+
+    .controls button,
+    .controls input {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 20px;
+      font-size: 1rem;
+    }
+
+    .controls button {
+      background: var(--primary);
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .controls button:hover {
+      background: #c7303d;
+    }
+
+    .controls input {
+      border: 2px solid var(--primary);
+      outline: none;
+      width: 200px;
+      color: var(--text);
+      background-color: var(--bg);
+    }
+
+    .menu-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+
+    .menu-item {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, opacity 0.4s ease;
+      opacity: 1;
+    }
+
+    .menu-item.hide {
+      opacity: 0;
+      transform: scale(0.95);
+      pointer-events: none;
+    }
+
+    .menu-item img {
+      width: 100%;
+      border-radius: 10px;
+      height: 160px;
+      object-fit: cover;
+      margin-bottom: 0.7rem;
+    }
+
+    .menu-item h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: var(--primary);
+    }
+
+    .menu-item p {
+      font-size: 0.9rem;
+    }
+
+    .price {
+      font-weight: bold;
+      color: var(--price);
+    }
+
+    @media (max-width: 600px) {
+      .controls {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🍽️ Delightful Menu</h1>
+  </header>
+
+  <div class="controls">
+    <button onclick="filterMenu('all')">All</button>
+    <button onclick="filterMenu('starters')">Starters</button>
+    <button onclick="filterMenu('main')">Main Course</button>
+    <button onclick="filterMenu('desserts')">Desserts</button>
+    <button onclick="filterMenu('beverages')">Beverages</button>
+    <input type="text" id="searchInput" placeholder="Search dishes..." oninput="searchMenu()" />
+    <button onclick="toggleDarkMode()">🌙 Toggle Dark Mode</button>
+  </div>
+
+  <div class="menu-container" id="menu">
+    <!-- Sample Menu Item -->
+    <div class="menu-item starters">
+      <img src="https://source.unsplash.com/400x300/?garlic-bread" alt="Garlic Bread">
+      <h3>Garlic Bread</h3>
+      <p>Toasted baguette with garlic butter</p>
+      <p class="price">₹99</p>
+    </div>
+    <div class="menu-item starters">
+      <img src="https://source.unsplash.com/400x300/?spring-rolls" alt="Spring Rolls">
+      <h3>Veg Spring Rolls</h3>
+      <p>Crispy rolls stuffed with fresh veggies</p>
+      <p class="price">₹129</p>
+    </div>
+    <div class="menu-item main">
+      <img src="https://source.unsplash.com/400x300/?paneer" alt="Paneer">
+      <h3>Paneer Butter Masala</h3>
+      <p>Rich tomato-based gravy with soft paneer</p>
+      <p class="price">₹199</p>
+    </div>
+    <div class="menu-item main">
+      <img src="https://source.unsplash.com/400x300/?biryani" alt="Biryani">
+      <h3>Chicken Biryani</h3>
+      <p>Fragrant basmati rice with spicy chicken</p>
+      <p class="price">₹249</p>
+    </div>
+    <div class="menu-item desserts">
+      <img src="https://source.unsplash.com/400x300/?brownie" alt="Brownie">
+      <h3>Chocolate Brownie</h3>
+      <p>Fudgy brownie with a scoop of ice cream</p>
+      <p class="price">₹149</p>
+    </div>
+    <div class="menu-item desserts">
+      <img src="https://source.unsplash.com/400x300/?gulab-jamun" alt="Gulab Jamun">
+      <h3>Gulab Jamun</h3>
+      <p>Traditional sweet soaked in syrup</p>
+      <p class="price">₹89</p>
+    </div>
+    <div class="menu-item beverages">
+      <img src="https://source.unsplash.com/400x300/?mojito" alt="Mojito">
+      <h3>Mojito</h3>
+      <p>Refreshing mint lime cooler</p>
+      <p class="price">₹99</p>
+    </div>
+    <div class="menu-item beverages">
+      <img src="https://source.unsplash.com/400x300/?cold-coffee" alt="Cold Coffee">
+      <h3>Cold Coffee</h3>
+      <p>Chilled coffee topped with ice cream</p>
+      <p class="price">₹119</p>
+    </div>
+  </div>
+
+  <script>
+    function filterMenu(category) {
+      const items = document.querySelectorAll('.menu-item');
+      items.forEach(item => {
+        if (category === 'all' || item.classList.contains(category)) {
+          item.classList.remove('hide');
+        } else {
+          item.classList.add('hide');
+        }
+      });
+    }
+
+    function searchMenu() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const items = document.querySelectorAll('.menu-item');
+      items.forEach(item => {
+        const name = item.querySelector('h3').innerText.toLowerCase();
+        if (name.includes(query)) {
+          item.classList.remove('hide');
+        } else {
+          item.classList.add('hide');
+        }
+      });
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark');
+    }
+  </script>
+
+</body>
+</html>
