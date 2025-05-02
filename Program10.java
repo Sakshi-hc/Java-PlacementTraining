@@ -1,20 +1,12 @@
 
-package program10;
+package String;
 
-
-public class Program10 {
-    static void mul(int i,int j,int k)
-    {
-        System.out.println(i*j*k);
+public class Program10{
+    public static void main(String[] args){
+        String cars="kia,bmw,benz";
+        String[] s=cars.split(",");
+        for(int i=0;i<s.length;i++){
+            System.out.println(s[i]);
     }
-
-    
-    public static void main(String[] args) {
-        System.out.println("Program starts");
-        mul(2,2,3);
-        mul(2,4,2);
-        System.out.println("Program ends");
-       
     }
-    
 }
